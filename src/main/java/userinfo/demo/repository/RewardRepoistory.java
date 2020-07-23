@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public interface RewardRepoistory extends JpaRepository<Reward, Long> {
-  Reward findRewardByUserUsername(String username);
+  List<Reward> findRewardsByUserUsername(String username);
 //  Reward findBy(Long id);
   Reward findByRewardName(String name);
   List<Reward> findByRewardNameInOrderById(List<String> rewardnames);

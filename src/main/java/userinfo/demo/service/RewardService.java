@@ -16,6 +16,7 @@ import userinfo.demo.repository.RewardRepoistory;
 import userinfo.demo.repository.UserRepository;
 
 import java.math.BigInteger;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,14 +43,32 @@ public class RewardService {
    * @param userName
    * @return
    */
-  public Reward findRewardByUserName(String userName){
-    return rewardRepoistory.findRewardByUserUsername(userName);
+  public List<Reward> findRewardsByUserName(String userName){
+    return rewardRepoistory.findRewardsByUserUsername(userName);
   }
 
+  public Date setDefaultExpiryDate(){
+    Date date = new Date();
+    Calendar c = Calendar.getInstance();
+    c.setTime(date);
+    c.add(Calendar.DATE, 15);
+    date = c.getTime();
+    return date;
+  }
+
+  public Date setExpiryDate(Integer time){
+    Date date = new Date();
+    Calendar c = Calendar.getInstance();
+    c.setTime(date);
+    c.add(Calendar.DATE, time);
+    date = c.getTime();
+    return date;
+  }
 
 
   /**
    * TODO 创建了新的User类型 但是不知道怎么传入值 而且传入参数太多 怎样优化
+   * 这里需要传入user的整个实例 ？
    * @param rewardName
    * @param expiryDate
    * @param discount
@@ -57,7 +76,8 @@ public class RewardService {
    * @return
    */
   public Reward saveReward(int discount, Date expiryDate, String rewardName, User user){
-    return rewardRepoistory.save(Reward.builder().discount(discount)
+    return rewardRepoistory.save(Reward.builder()
+      .discount(discount)
       .expiryDate(expiryDate)
       .rewardName(rewardName)
       .rewardState(RewardState.NOTUSED)
@@ -92,6 +112,8 @@ public class RewardService {
   public List<Reward> getRewardByRewardName(List<String> rewardnames){
     return rewardRepoistory.findByRewardNameInOrderById(rewardnames);
   }
+
+
 
 }
 

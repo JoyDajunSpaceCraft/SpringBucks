@@ -1,6 +1,7 @@
 drop table t_user if exists;
 drop table t_reward if exists;
 drop table tcoffee if exists;
+-- 注意 Mysql数据库 如果是要定义 expiryDate 要转换成 expiry_date 否则数据库不识别
 
 create table t_coffee (
     id bigint auto_increment,

@@ -54,6 +54,7 @@ public class UserService {
   public List<User> findAllUser(){
     return userRepository.findAll();
   }
+
   @CacheEvict
   public void reloadUser(){}
 
@@ -68,9 +69,10 @@ public class UserService {
   public long getUserCount(){
     return userRepository.count();
   }
-  public List<User> getUserByUsername(List<String> usernames){
-    return userRepository.findByUsernameInOrderById(usernames);
+  public User getUserByUsername(String usernames){
+    return userRepository.findByUsername(usernames);
   }
+
 
   @Autowired
   private RedisTemplate<String, User> redisTemplate;//在主程序中配置需要类型的redisTemplate Bean
@@ -81,13 +83,15 @@ public class UserService {
    * @param username
    * @return
    */
-  public Optional<User> findOneUser(String username) {//TODO 做序列化和反序列化 StringRedisTemplate! 了解一下cache和redistemplate的封装区别
+  public Optional<User> findOneUser(String username) {//TODO 做序列化和反序列化 StringRedisTemplate!https://www.cnblogs.com/wangzhuxing/p/10198347.html#_label0_0
+    // TODO 了解一下cache和redistemplate的封装区别
     //判断缓存中有没有 user
     HashOperations<String, String, User> hashOperations = redisTemplate.opsForHash();
     if (redisTemplate.hasKey(CACHE) && hashOperations.hasKey(CACHE, username)) {
       log.info("Get user {} from redis",username);
       return Optional.of(hashOperations.get(CACHE,username));
     }
+
 
     ExampleMatcher matcher = ExampleMatcher.matching()
       .withIgnoreCase("username");

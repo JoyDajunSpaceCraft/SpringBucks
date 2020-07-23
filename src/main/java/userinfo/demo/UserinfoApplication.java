@@ -17,6 +17,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import userinfo.demo.model.*;
 import userinfo.demo.repository.RewardRepoistory;
 import userinfo.demo.repository.UserRepository;
@@ -37,7 +38,7 @@ import java.util.Optional;
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
 //@EnableCaching(proxyTargetClass = true)//基于AOP的实现缓存的机制
-public class UserinfoApplication implements ApplicationRunner {
+public class UserinfoApplication implements ApplicationRunner , WebMvcConfigurer {
   @Autowired
   private UserService userService;
 
